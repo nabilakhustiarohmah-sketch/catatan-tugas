@@ -23,4 +23,43 @@ class TaskController extends Controller
         }
     }
 
-    
+    /**
+     * Form tambah tugas.
+     */
+    public function create()
+    {
+        return 'Halaman Create Tugas';
+    }
+
+    /**
+     * Simpan tugas baru.
+     */
+    public function store(Request $request)
+    {
+        return 'Proses Store Tugas Berhasil';
+    }
+
+    /**
+     * Form edit tugas.
+     */
+    public function edit($id)
+    {
+        return 'Halaman Edit Tugas ID: ' . $id;
+    }
+
+    /**
+     * Update data tugas.
+     */
+    public function update(Request $request, $id)
+    {
+        return 'Proses Update Tugas ID: ' . $id;
+    }
+
+    /**
+     * Hapus data tugas.
+     */
+    public function destroy($id)
+    {
+        return 'Proses Hapus Tugas ID: ' . $id;
+    }
+}

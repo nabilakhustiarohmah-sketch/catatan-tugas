@@ -2,34 +2,67 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
+    // Menampilkan semua tugas
     public function index()
     {
-        try {
-            $count = DB::table('tasks')->count();
-
-            return "Database terkoneksi. Jumlah tugas: " . $count;
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
+        $tasks = Task::latest()->get();
+        return view('tasks.index', compact('tasks'));
     }
 
+    // Form tambah tugas (opsional)
     public function create()
     {
-        return 'Halaman Create';
+        return view('tasks.create');
     }
 
+    // Simpan tugas baru
     public function store(Request $request)
     {
-        return 'Store berhasil';
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'nullable',
+        ]);
+
+        Task::create($validated);
+
+        return redirect()
+            ->route('tasks.index')
+            ->with('success', 'Tugas berhasil ditambahkan!');
     }
 
-    public function edit($id)
+    // Form edit tugas
+    public function edit(Task $task)
     {
-        return 'Edit produk ID: ' . $id;
+        return view('tasks.edit', compact('task'));
+    }
+
+    // Update tugas
+public function update(Request $request, Task $task)
+{
+    $validated = $request->validate([
+        'title' => 'required|max:255',
+        'description' => 'nullable',
+        'status' => 'required|boolean'
+    ]);
+
+    $task->update($validated);
+
+    return redirect()
+        ->route('tasks.index')
+        ->with('success', 'Tugas berhasil diperbarui!');
+}
+    // Hapus tugas
+    public function destroy(Task $task)
+    {
+        $task->delete();
+
+        return redirect()
+            ->route('tasks.index')
+            ->with('success', 'Tugas berhasil dihapus!');
     }
 }

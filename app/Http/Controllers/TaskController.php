@@ -2,67 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    // Menampilkan semua tugas
     public function index()
     {
-        $tasks = Task::latest()->get();
-        return view('tasks.index', compact('tasks'));
+        return 'Laravel berhasil berjalan';
     }
 
-    // Form tambah tugas (opsional)
     public function create()
     {
-        return view('tasks.create');
+        return 'Halaman Create';
     }
 
-    // Simpan tugas baru
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'nullable',
-        ]);
-
-        Task::create($validated);
-
-        return redirect()
-            ->route('tasks.index')
-            ->with('success', 'Tugas berhasil ditambahkan!');
+        return 'Store berhasil';
     }
 
-    // Form edit tugas
-    public function edit(Task $task)
+    public function edit($id)
     {
-        return view('tasks.edit', compact('task'));
+        return 'Edit produk ID: ' . $id;
     }
 
-    // Update tugas
-public function update(Request $request, Task $task)
-{
-    $validated = $request->validate([
-        'title' => 'required|max:255',
-        'description' => 'nullable',
-        'status' => 'required|boolean'
-    ]);
-
-    $task->update($validated);
-
-    return redirect()
-        ->route('tasks.index')
-        ->with('success', 'Tugas berhasil diperbarui!');
-}
-    // Hapus tugas
-    public function destroy(Task $task)
+    public function update(Request $request, $id)
     {
-        $task->delete();
+        return 'Update produk ID: ' . $id;
+    }
 
-        return redirect()
-            ->route('tasks.index')
-            ->with('success', 'Tugas berhasil dihapus!');
+    public function destroy($id)
+    {
+        return 'Hapus produk ID: ' . $id;
     }
 }
